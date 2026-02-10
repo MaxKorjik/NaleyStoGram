@@ -6,9 +6,12 @@ from .auth import router
 app = FastAPI()
 app.include_router(router=router)
 
+origins = [
+    "http://localhost:3000"
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],        # Use the list, not ["*"]
+    allow_origins=origins,        # Use the list, not ["*"]
     allow_credentials=True,       # This must be True for cookies/auth headers
     allow_methods=["*"],          # Allows GET, POST, OPTIONS, etc.
     allow_headers=["*"],          # Allows all headers
