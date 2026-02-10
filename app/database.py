@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-MONGO_URI = 'mongodb://localhost:27017/'
+MONGO_URI = 'mongodb+srv://ytgreik_db_user:9AaCxiuZyIVqQ2RO@naleystogram.v98iit4.mongodb.net/?appName=NaleyStoGram'
 client = MongoClient(MONGO_URI)
 
 print(client.list_database_names())
