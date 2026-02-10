@@ -25,20 +25,20 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str):
     return pwd_context.hash(password)
 
-def authenticate_user(db, username_or_email: str, password: str):
+def authenticate_user(username_or_email: str, password: str):
     user = users.find_one({
         "$or": [{"email": username_or_email}, {"username": username_or_email}]
     })
-    if not user or not verify_password(password, user.hashed_password):
+    if not user or not verify_password(password, user["hashed_password"]):
         return False
     return user
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.now(datetime.timezone.utc) + expires_delta
+        expire = datetime.now() + expires_delta
     else:
-        expire = datetime.now(datetime.timezone.utc) + timedelta(minutes=15)
+        expire = datetime.now() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -85,7 +85,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={"sub": user.email})
+    access_token = create_access_token(data={"sub": user["email"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/me")
