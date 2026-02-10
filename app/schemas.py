@@ -16,3 +16,7 @@ class UserInDB(UserBase):
 
 class UserOut(UserBase):
     id: str
+    
+class UserLogin(BaseModel):
+    username : str
+    password : str

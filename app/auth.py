@@ -5,7 +5,7 @@ from typing import Optional
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from bson import ObjectId
-from .schemas import UserCreate, UserOut, PyObjectId
+from .schemas import UserCreate, UserOut, PyObjectId, UserLogin
 from .database import users
 import hashlib
 
@@ -77,8 +77,8 @@ def register(user: UserCreate):
     return {"msg": "User registered successfully"}
 
 @router.post("/login", summary="Login user and get access token", tags=["Auth"])
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
+def login(data : UserLogin):
+    user = authenticate_user(data.username, data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
