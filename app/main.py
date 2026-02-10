@@ -8,7 +8,10 @@ app.include_router(router=router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"]
+    allow_origins=["*"],        # Use the list, not ["*"]
+    allow_credentials=True,       # This must be True for cookies/auth headers
+    allow_methods=["*"],          # Allows GET, POST, OPTIONS, etc.
+    allow_headers=["*"],          # Allows all headers
 )
 
 @app.get('/')
